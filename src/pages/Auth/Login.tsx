@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, useNavigate ,Link} from 'react-router';
 import google from '../../assets/google.png'
 import { MdEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
@@ -17,15 +17,26 @@ const Login = (): React.JSX.Element => {
     const [password, setPassword] =  useState<string>('');
     const navigate = useNavigate();
     const {reload} = useAuth()
+
+    function validateForm(){
+        if(!email.trim()) return "email is required";
+        if(!password.trim()) return "password is required"
+    }
+
     async function onSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault();
+        const error = validateForm();
+        
+        if(error) toast.error(error)
+
         try {
             await login({email, password})
             toast.success('log in successful')
-            reload()
+            await reload()
             navigate('/dashboard')
         }catch(e){
             console.error('error while trying to log in', e)
+            if(e instanceof Error) toast.error(e.message)
         }
     }
 
@@ -61,6 +72,9 @@ const Login = (): React.JSX.Element => {
                     <img src={google} className='h-5'></img>
                     Continue With Google
                     </button>
+                    <div>
+                        Don't have an account ? <Link className='text-neon' to="/signup">Sign Up</Link>
+                    </div>
             </div>
                 <img src={LogIn} className='hidden md:block w-[60%] h-screen object-cover'></img> 
         </div>

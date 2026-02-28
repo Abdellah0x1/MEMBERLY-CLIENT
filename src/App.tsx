@@ -9,6 +9,11 @@ import Signup from "./pages/Auth/Signup"
 import { ToastContainer } from 'react-toastify';
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import Dashboard from "./pages/GymOwner/Dashboard"
+import Members from "./pages/GymOwner/Members"
+import Coaches from "./pages/GymOwner/Coaches"
+import Settings from "./pages/GymOwner/Settings"
+import Subscriptions from "./pages/GymOwner/Subscriptions"
+import ResetPassword from "./pages/Auth/ResetPassword"
 
 function App(): React.JSX.Element {
   
@@ -24,8 +29,14 @@ function App(): React.JSX.Element {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/forgotPassword" element={<ForgotPassword/>}/>
         <Route element={<ProtectedRoute allowedRoles={["owner"]}/>}>
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}>
+          <Route path="members" element={<Members/>}/>
+          <Route path="coaches" element={<Coaches/>}/>
+          <Route path="settings" element={<Settings/>}/>
+          <Route path="subscriptions" element={<Subscriptions/>}/>
+        </Route>
       </Route>
+        <Route path="/resetPassword/:token" element={<ResetPassword/>}/>
       </Routes>
       
         

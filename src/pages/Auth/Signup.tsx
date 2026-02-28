@@ -8,6 +8,8 @@ import { TbLockPassword } from "react-icons/tb";
 import { MdNavigateNext } from "react-icons/md";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { createOwner } from '../../api/requests';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 
 const Signup = (): React.JSX.Element => {
@@ -18,9 +20,22 @@ const Signup = (): React.JSX.Element => {
     const [passwordConfirm, setPasswordConfirm] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+    const navigate = useNavigate()
+
+    function validateForm(){
+        if(!name.trim()) return "name is required"
+        if(!gymName.trim()) return "gym name is required"
+        if(!email.trim()) return "email is required"
+        if(!password.trim()) return "password is required"
+        if(!passwordConfirm.trim()) return "please confirm your password"
+    }
+
 
     async function onSubmit(e: React.SubmitEvent<HTMLFormElement>){
         e.preventDefault()
+        const error = validateForm()
+
+        if(error) return toast.error(error)
         try{
             await createOwner({
                 owner: {
@@ -32,8 +47,13 @@ const Signup = (): React.JSX.Element => {
                 gymName,
                 
             })
+            toast.success('signed up successfully');
+            navigate('/')
+            
         }catch(e){
             console.error('error signing up', e)
+
+            if(e instanceof Error) toast.error(e.message)
         }
     }
     return (
