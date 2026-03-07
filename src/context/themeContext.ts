@@ -5,7 +5,7 @@ export type themeContextValue = {
     toggleTheme: () => void
 }
 
-export const themeContext = createContext<themeContextValue | null>(null);
+export const themeContext = createContext<themeContextValue | undefined>( undefined);
 
 
 

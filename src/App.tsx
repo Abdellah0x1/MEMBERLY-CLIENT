@@ -14,6 +14,7 @@ import Coaches from "./pages/GymOwner/Coaches"
 import Settings from "./pages/GymOwner/Settings"
 import Subscriptions from "./pages/GymOwner/Subscriptions"
 import ResetPassword from "./pages/Auth/ResetPassword"
+import JoinGym from "./pages/gym/JoinGym"
 
 function App(): React.JSX.Element {
   
@@ -36,7 +37,8 @@ function App(): React.JSX.Element {
           <Route path="subscriptions" element={<Subscriptions/>}/>
         </Route>
       </Route>
-        <Route path="/resetPassword/:token" element={<ResetPassword/>}/>
+      <Route path="/resetPassword/:token" element={<ResetPassword/>}/>
+      <Route path="/joingym/:code" element={<JoinGym/>}/>
       </Routes>
       
         

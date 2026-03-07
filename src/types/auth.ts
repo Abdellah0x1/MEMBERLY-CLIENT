@@ -13,6 +13,12 @@ export type OwnerSingupPayload = {
     }
     gymName: string,
 }
+export type MemberSingupPayload = {
+        name: string,
+        email: string,
+        password: string,
+        passwordConfirm: string,
+}
 
 
 
@@ -21,5 +27,6 @@ export type User = {
     email: string,
     _id: string,
     role: string,
-    picture?: string
+    picture?: string,
+    gymId: string
 }

@@ -12,4 +12,4 @@ export type AuthProviderProps = {
     children : ReactNode
 }
 
-export const AuthContext = createContext<AuthContextValue | null>(null) 
+export const AuthContext = createContext<AuthContextValue | undefined>(undefined) 
