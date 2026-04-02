@@ -5,7 +5,7 @@ export type AuthContextValue = {
     user: User | null,
     isLoading: boolean,
     logout: () => void,
-    reload: ()=> void
+    reload: ()=> Promise<void>
 }
 
 export type AuthProviderProps = {

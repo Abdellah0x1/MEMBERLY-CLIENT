@@ -4,8 +4,9 @@
 
 
 :root {
-  --background: #000;
+  --background: #0a0a0f;
   --secondary: #00FFAA;
+  --bg-secondary: #12121a
   
 }
 
@@ -20,6 +21,8 @@
   --color-ghost: #E8ECF1;
   --color-slate: #6B7A8D;
   --color-charcoal: #3A4553;
+  --color-bg-secondary: var(--bg-secondary);
+  
 }
 
 @layer base {
@@ -35,5 +38,12 @@
       padding: 0.4rem 1rem;
       border-radius: 0.25rem;
       cursor: pointer;
+    }
+    .input {
+      @apply text-sm placeholder:text-gray-500 px-4 py-2.5 border border-gray-700 rounded-lg focus:outline-none focus:border-neon
+    }
+
+    .label {
+      @apply text-sm font-medium text-gray-300
     }
 }

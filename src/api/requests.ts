@@ -1,4 +1,4 @@
-    import type { LoginPayload, OwnerSingupPayload, MemberSingupPayload } from "../types/auth";
+import type { LoginPayload, OwnerSingupPayload, MemberSingupPayload } from "../types/auth";
 import api from "./axios";
 
 
@@ -13,10 +13,20 @@ export const resetPassword = async (token: string, newPassword : string, newPass
 
 //gyms
 export const previewGym = async (code: string | undefined) => api.get(`/gyms/preview?code=${code}`);
-
+export const setupGym = async (gymPayload: {
+    gymName: string,
+    description: string,
+    address: string
+}
+    
+) => api.post('/gyms/setup-gym', gymPayload)
 
 //invite
 export const inviteMember = async (email :string, gymId: string) => api.post(`/gyms/${gymId}/invites/createInvite`, {to: email})
 
 //members
-export const addMember = async (member : MemberSingupPayload) => api.post('/gymcustomers',{member});
+export const addMember = async (member : MemberSingupPayload, inviteCode: string) => api.post(`/customers/join/${inviteCode}`,member);
+
+
+//users
+export const getUsersByRole = async (role: string,gymId: string | undefined) => api.get(`/gyms/${gymId}/users?role=${role}`)

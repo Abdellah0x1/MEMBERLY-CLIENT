@@ -1,5 +1,6 @@
 import type React from "react"
 import {BrowserRouter, Routes, Route} from "react-router-dom"
+
 import Layout from "./pages/Layout"
 import Home from "./pages/Home"
 import Login from "./pages/Auth/Login"
@@ -15,6 +16,9 @@ import Settings from "./pages/GymOwner/Settings"
 import Subscriptions from "./pages/GymOwner/Subscriptions"
 import ResetPassword from "./pages/Auth/ResetPassword"
 import JoinGym from "./pages/gym/JoinGym"
+import SetupGym from "./pages/gym/SetupGym"
+import CustomerProfile from "./pages/GymCustomer/CustomerProfile"
+import Overview from "./pages/GymOwner/Overview"
 
 function App(): React.JSX.Element {
   
@@ -30,12 +34,17 @@ function App(): React.JSX.Element {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/forgotPassword" element={<ForgotPassword/>}/>
         <Route element={<ProtectedRoute allowedRoles={["owner"]}/>}>
-        <Route path="/dashboard" element={<Dashboard/>}>
-          <Route path="members" element={<Members/>}/>
-          <Route path="coaches" element={<Coaches/>}/>
-          <Route path="settings" element={<Settings/>}/>
-          <Route path="subscriptions" element={<Subscriptions/>}/>
-        </Route>
+          <Route path="/dashboard" element={<Dashboard/>}>
+            <Route index element={<Overview/>}/>
+            <Route path="members" element={<Members/>}/>
+            <Route path="coaches" element={<Coaches/>}/>
+            <Route path="settings" element={<Settings/>}/>
+            <Route path="subscriptions" element={<Subscriptions/>}/>
+          </Route>
+          <Route path="/setup-gym" element={<SetupGym/>}/>
+      </Route>
+        <Route path="/memberProfile" element={<CustomerProfile/>}/>
+      <Route element={<ProtectedRoute allowedRoles={['member']}/>}>
       </Route>
       <Route path="/resetPassword/:token" element={<ResetPassword/>}/>
       <Route path="/joingym/:code" element={<JoinGym/>}/>

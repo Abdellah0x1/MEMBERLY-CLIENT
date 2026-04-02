@@ -11,10 +11,9 @@ import { AuthContext } from "./authContext";
 
 export function AuthProvider({children} : AuthProviderProps ): React.JSX.Element{
     const [user, setUser] = useState<User | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     async function loadSession(){
             try {
-                setIsLoading(true)
                 const res = await getMe();
                 setUser(res.data.data.user);
                 setIsLoading(false)
