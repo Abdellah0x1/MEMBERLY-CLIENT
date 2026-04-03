@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router';
 
 import { useAuth } from '../../hooks/useAuth';
-import { Activity, LayoutDashboard, CreditCard, Users, Dumbbell, Settings, Search, Menu, X, Bell, Clock } from 'lucide-react';
+import { Activity, LayoutDashboard, CreditCard, Users, Dumbbell, Settings, Search, Menu, X, Bell, Clock, ChevronDown } from 'lucide-react';
 import { IoIosNotifications } from "react-icons/io";
 import { PiSignOut } from "react-icons/pi";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
@@ -52,7 +52,11 @@ const Dashboard = (): React.JSX.Element => {
     }, []);
 
     return (
-        <div className='flex h-screen dark:bg-[#0a0a0f] dark:text-gray-100'>
+        <div className='flex h-screen bg-gray-50 dark:bg-[#0a0a0f] dark:text-gray-100 relative overflow-hidden'>
+            {/* Subtle background glow for glassmorphism to show through */}
+            <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-neon/5 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-500/5 blur-[100px] rounded-full pointer-events-none translate-x-1/3 translate-y-1/3" />
+
             {/* Mobile overlay */}
             {sidebarOpen && (
                 <div
@@ -64,12 +68,12 @@ const Dashboard = (): React.JSX.Element => {
             {/* Sidebar */}
             <aside className={`
                 fixed md:static z-40 flex flex-col h-screen w-64 shrink-0
-                bg-white dark:bg-[#12121a] border-r border-gray-200 dark:border-gray-800
-                transition-transform duration-200 ease-in-out
+                bg-white/60 dark:bg-[#12121a]/50 backdrop-blur-2xl border-r border-gray-200/50 dark:border-white/[0.05]
+                transition-transform duration-200 ease-in-out shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
             `}>
                 {/* Logo */}
-                <div className='flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-gray-800/50'>
+                <div className='flex items-center justify-between px-6 py-5 border-b border-gray-200/50 dark:border-white/[0.05]'>
                     <h1 className='font-bold text-xl flex gap-2 items-center text-neon'>
                         <Activity size={22} /> MEMBERLY
                     </h1>
@@ -104,7 +108,7 @@ const Dashboard = (): React.JSX.Element => {
                 </nav>
 
                 {/* Sign out */}
-                <div className='px-3 py-4 border-t border-gray-200 dark:border-gray-800/50'>
+                <div className='px-3 py-4 border-t border-gray-200/50 dark:border-white/[0.05]'>
                     <button onClick={()=> logout()} className='flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium w-full text-gray-600 dark:text-gray-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 dark:hover:text-red-400 transition-all'>
                         <PiSignOut size={18} />
                         Sign Out
@@ -113,9 +117,9 @@ const Dashboard = (): React.JSX.Element => {
             </aside>
 
             {/* Main content */}
-            <div className='flex-1 flex flex-col min-w-0'>
+            <div className='flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10'>
                 {/* Top nav */}
-                <nav className='flex items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800/50 bg-white dark:bg-[#12121a] px-4 sm:px-6 py-3 shrink-0'>
+                <nav className='sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-gray-200/50 dark:border-white/[0.05] bg-white/60 dark:bg-[#0a0a0f]/60 backdrop-blur-2xl px-4 sm:px-6 py-3 shrink-0 shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none'>
                     {/* Left: hamburger + search */}
                     <div className='flex items-center gap-3 flex-1 min-w-0'>
                         <button className='md:hidden text-gray-500 shrink-0' onClick={() => setSidebarOpen(true)}>
@@ -203,22 +207,29 @@ const Dashboard = (): React.JSX.Element => {
                                 </div>
                             )}
                         </div>
-                        <div className='hidden sm:flex items-center gap-3 ml-2 pl-3 border-l border-gray-200 dark:border-gray-700'>
-                            <img
-                                className='w-9 h-9 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700'
-                                src={user?.picture || userIcon}
-                                alt='avatar'
-                            />
-                            <div className='leading-tight'>
-                                <p className='text-sm font-semibold truncate max-w-[120px]'>{user?.name}</p>
-                                <p className='text-xs text-gray-500 dark:text-gray-500 capitalize'>{user?.role}</p>
-                            </div>
+                        <div className='hidden sm:flex items-center gap-3 ml-2 pl-3 border-l border-gray-200 dark:border-gray-800'>
+                            <button className='group flex items-center gap-3 p-1.5 pr-3 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.04] transition-all outline-none border border-transparent hover:border-gray-200 dark:hover:border-white/10'>
+                                <div className='relative'>
+                                    <div className='absolute inset-0 bg-gradient-to-r from-neon to-purple-500 rounded-full blur-[3px] opacity-0 group-hover:opacity-70 transition-opacity duration-300' />
+                                    <img
+                                        className='relative w-9 h-9 rounded-full object-cover border-[1.5px] border-white dark:border-[#1a1a24] bg-white dark:bg-[#12121a]'
+                                        src={user?.picture || userIcon}
+                                        alt='avatar'
+                                    />
+                                    <div className='absolute -bottom-0.5 -right-0.5 w-[14px] h-[14px] bg-emerald-500 rounded-full border-[2.5px] border-white dark:border-[#12121a]' />
+                                </div>
+                                <div className='leading-tight text-left mr-1'>
+                                    <p className='text-sm font-semibold truncate max-w-[120px] text-gray-800 dark:text-gray-100 group-hover:text-neon transition-colors'>{user?.name || 'Admin User'}</p>
+                                    <p className='text-[11px] font-medium text-gray-500 dark:text-gray-400 capitalize tracking-wide'>{user?.role || 'Owner'}</p>
+                                </div>
+                                <ChevronDown size={14} className='text-gray-400 group-hover:text-neon transition-transform duration-300 group-hover:translate-y-0.5' />
+                            </button>
                         </div>
                     </div>
                 </nav>
 
                 {/* Page content */}
-                <div className='flex-1 overflow-y-auto bg-gray-50 dark:bg-[#0a0a0f] p-4 sm:p-6'>
+                <div className='flex-1 p-4 sm:p-6'>
                     <Outlet />
                 </div>
             </div>

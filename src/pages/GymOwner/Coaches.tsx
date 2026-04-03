@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../../components/Modal';
 import { motion } from 'motion/react';
-import { Plus, Search, Mail, Star, Users, MapPin, MoreHorizontal } from 'lucide-react';
+import { Plus, Search, Mail, Star, Users, MoreHorizontal } from 'lucide-react';
 
 const MOCK_COACHES = [
     { id: 1, name: 'Michael Johnson', email: 'michael.j@example.com', specialty: 'Strength & Conditioning', rating: 4.9, students: 42, active: true },

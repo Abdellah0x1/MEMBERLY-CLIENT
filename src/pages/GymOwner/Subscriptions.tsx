@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Check, Plus, Edit2, Shield, Zap, Crown } from 'lucide-react';
 import { motion } from 'motion/react';
 

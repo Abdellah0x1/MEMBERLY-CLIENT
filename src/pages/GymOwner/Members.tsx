@@ -9,13 +9,13 @@ import { useUsersByRoleQuery } from '../../hooks/useUsersByRoleQuery';
 import Spinner from '../../components/Spinner';
 
 import { motion } from 'motion/react';
-import { Search, Filter, Plus, Mail, MoreVertical, ShieldCheck } from 'lucide-react';
+import { Search, Filter, Plus, Mail, MoreVertical, ShieldCheck, Users } from 'lucide-react';
 
 const Members = (): React.JSX.Element => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [memberEmail, setMemberEmail] = useState<string>('');
-    const [searchTerm, setSearchTerm] = useState('');
-    
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
     const { user } = useAuth();
     const {
         data: users = [],
@@ -49,9 +49,9 @@ const Members = (): React.JSX.Element => {
     }
 
     const errorMessage = error instanceof Error ? error.message : 'Failed to load members';
-    
-    const filteredUsers = users.filter((u: any) => 
-        u.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+
+    const filteredUsers = users.filter((u: any) =>
+        u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         u.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -64,8 +64,8 @@ const Members = (): React.JSX.Element => {
                     </h1>
                     <p className='text-gray-500 dark:text-gray-400 mt-1'>Manage your gym members and invite new ones.</p>
                 </div>
-                <button 
-                    onClick={() => setShowModal(true)} 
+                <button
+                    onClick={() => setShowModal(true)}
                     className='flex items-center gap-2 px-5 py-2.5 bg-neon text-black font-semibold rounded-xl hover:bg-neon/90 hover:shadow-[0_0_20px_-5px_rgba(0,255,170,0.5)] transition-all'
                 >
                     <Plus size={20} />
@@ -77,11 +77,11 @@ const Members = (): React.JSX.Element => {
             <div className='flex flex-col sm:flex-row gap-4 items-center justify-between bg-white dark:bg-[#12121a] p-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm'>
                 <div className='relative w-full sm:max-w-md'>
                     <Search className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' size={18} />
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search members by name or email..." 
+                        placeholder="Search members by name or email..."
                         className='w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-[#0a0a0f] border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 text-sm transition-all'
                     />
                 </div>
@@ -104,10 +104,10 @@ const Members = (): React.JSX.Element => {
                         <p className="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">Send an invitation link to their email address.</p>
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                            <input 
-                                value={memberEmail} 
-                                onChange={(e) => setMemberEmail(e.target.value)} 
-                                className='w-full pl-10 pr-4 py-3 text-sm border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#12121a] rounded-xl focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all text-gray-900 dark:text-white placeholder-gray-500' 
+                            <input
+                                value={memberEmail}
+                                onChange={(e) => setMemberEmail(e.target.value)}
+                                className='w-full pl-10 pr-4 py-3 text-sm border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#12121a] rounded-xl focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all text-gray-900 dark:text-white placeholder-gray-500'
                                 placeholder='member@example.com'
                                 autoFocus
                             />
@@ -155,7 +155,7 @@ const Members = (): React.JSX.Element => {
             {!isPending && !isError && filteredUsers.length > 0 && (
                 <div className='bg-white dark:bg-[#12121a] border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm'>
                     {isFetching && <div className="h-1 bg-neon/20 overflow-hidden"><div className="h-full bg-neon w-1/3 animate-pulse rounded-full" /></div>}
-                    
+
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm whitespace-nowrap">
                             <thead className="bg-gray-50 dark:bg-[#0a0a0f] border-b border-gray-200 dark:border-gray-800">
@@ -168,7 +168,7 @@ const Members = (): React.JSX.Element => {
                             </thead>
                             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {filteredUsers.map((member: any, i: number) => (
-                                    <motion.tr 
+                                    <motion.tr
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.05 }}
