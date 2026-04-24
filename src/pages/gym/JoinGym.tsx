@@ -50,7 +50,7 @@ const JoinGym = (): React.JSX.Element => {
                 toast.error('Passwords do not match');
                 return;
             }
-            const res = await addMember({
+            await addMember({
                 name,
                 email,
                 password,

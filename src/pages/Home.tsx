@@ -352,7 +352,7 @@ const Home = (): React.JSX.Element => {
             );
 
             const featureCards = gsap.utils.toArray('.feature-card');
-            featureCards.forEach((card: any, index: number) => {
+            featureCards.forEach((card: any) => {
                 gsap.fromTo(card,
                     { y: 120, opacity: 0, scale: 0.95 },
                     {
@@ -378,7 +378,7 @@ const Home = (): React.JSX.Element => {
             );
 
             const testimonialCards = gsap.utils.toArray('.testimonial-card');
-            testimonialCards.forEach((card: any, index) => {
+            testimonialCards.forEach((card: any) => {
                 gsap.fromTo(card,
                     { y: 100, opacity: 0, scale: 0.95 },
                     {
