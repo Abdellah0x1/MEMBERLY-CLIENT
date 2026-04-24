@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Building2, MapPin, Globe, Phone, Mail, Clock, LayoutDashboard } from 'lucide-react';
+import { Save, Building2, MapPin, Phone, Mail, LayoutDashboard } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const Settings = (): React.JSX.Element => {

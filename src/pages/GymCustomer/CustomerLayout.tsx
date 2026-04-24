@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
-import { Activity, User, CreditCard, Dumbbell, Calendar, Search, Menu, X, Bell, Clock, ChevronDown } from 'lucide-react';
+import { Activity, User, CreditCard, Dumbbell, Calendar, Menu, X, Bell, Clock, ChevronDown } from 'lucide-react';
 import { IoIosNotifications } from "react-icons/io";
 import { PiSignOut } from "react-icons/pi";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";

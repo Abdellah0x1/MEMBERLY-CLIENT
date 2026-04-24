@@ -341,7 +341,7 @@ const Home = (): React.JSX.Element => {
     }, []);
 
     useEffect(() => {
-        let ctx = gsap.context(() => {
+        const ctx = gsap.context(() => {
             gsap.fromTo('.features-heading',
                 { opacity: 0, y: 60 },
                 {
@@ -352,7 +352,7 @@ const Home = (): React.JSX.Element => {
             );
 
             const featureCards = gsap.utils.toArray('.feature-card');
-            featureCards.forEach((card: any, index) => {
+            featureCards.forEach((card: any, index: number) => {
                 gsap.fromTo(card,
                     { y: 120, opacity: 0, scale: 0.95 },
                     {
