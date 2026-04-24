@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { NavLink, useParams } from 'react-router';
+import { NavLink, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb"; 
 import { FaArrowLeft } from "react-icons/fa6";
-
+import { motion } from 'motion/react';
 import { resetPassword } from '../../api/requests';
-
 
 const ResetPassword = ():React.JSX.Element => {
     const [newPassword, setNewPassword] = useState<string>('')
@@ -19,7 +18,7 @@ const ResetPassword = ():React.JSX.Element => {
 
     const { token } = useParams<{ token: string }>();
 
-    async function onSubmit(e: React.SubmitEvent){
+    async function onSubmit(e: React.FormEvent){
         e.preventDefault()
         if (isSubmitting) return;
 
@@ -67,42 +66,44 @@ const ResetPassword = ():React.JSX.Element => {
         }
     }
     return (
-        <div className='bg-black min-h-screen flex justify-center items-center text-white px-4'>
-            <div className='w-full max-w-md border border-white rounded-xl p-6 md:p-8 flex flex-col gap-5'>
-                <div>
-                    <h1 className='text-center mb-5 text-secondary font-bold text-2xl'>MEMBERLY</h1>
-                    <h2 className='text-center text-xl font-bold'>Set a new password</h2>
-                    <p className='text-gray-300 text-center'>Create a secure password with at least 8 characters.</p>
+        <div className='bg-void min-h-screen flex justify-center items-center text-ghost font-sans selection:bg-neon selection:text-void px-4'>
+            <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className='w-full max-w-md flex flex-col gap-8'
+            >
+                <div className='text-center'>
+                    <h1 className='text-4xl font-bold text-white mb-3 tracking-tight'>Set a new password</h1>
+                    <p className='text-slate text-lg'>Secure your account with a strong, new password.</p>
                 </div>
 
-                <form onSubmit={onSubmit} className='flex flex-col gap-4'>
-                    <label htmlFor='newPassword' className='text-sm font-medium text-gray-200'>New password</label>
-                    <div className='relative'>
+                <form onSubmit={onSubmit} className='flex flex-col gap-5'>
+                    <div className='relative group'>
+                        <TbLockPassword className='absolute top-1/2 left-4 -translate-y-1/2 text-slate group-focus-within:text-white transition-colors' size={20} />
                         <input
                             id='newPassword'
                             value={newPassword}
                             onChange={e => setNewPassword(e.target.value)}
                             type={showPassword ? 'text' : 'password'}
-                            placeholder='Enter new password'
+                            placeholder='New password'
                             autoComplete='new-password'
                             disabled={isSubmitting}
                             aria-invalid={Boolean(errorMessage)}
-                            className='w-full py-2 pl-8 pr-10 rounded-md border border-white focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary disabled:opacity-70'
-                        >
-                        </input>
-                        <TbLockPassword className='absolute left-2 top-1/2 -translate-y-1/2'/>
+                            className='w-full py-4 pl-12 pr-12 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-slate focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all disabled:opacity-50'
+                        />
                         <button
                             type='button'
                             onClick={() => setShowPassword((prev) => !prev)}
-                            className='absolute right-2 top-1/2 -translate-y-1/2'
+                            className='absolute right-4 top-1/2 -translate-y-1/2 text-slate hover:text-white transition-colors'
                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                         >
-                            {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                            {showPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
                         </button>
                     </div>
 
-                    <label htmlFor='confirmPassword' className='text-sm font-medium text-gray-200'>Confirm password</label>
-                    <div className='relative'>
+                    <div className='relative group'>
+                        <TbLockPassword className='absolute top-1/2 left-4 -translate-y-1/2 text-slate group-focus-within:text-white transition-colors' size={20} />
                         <input
                             id='confirmPassword'
                             value={newPasswordConfirm}
@@ -112,39 +113,43 @@ const ResetPassword = ():React.JSX.Element => {
                             autoComplete='new-password'
                             disabled={isSubmitting}
                             aria-invalid={Boolean(errorMessage)}
-                            className='w-full py-2 pl-8 pr-10 rounded-md border border-white focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary disabled:opacity-70'
-                        >
-                        </input>
-                        <TbLockPassword className='absolute left-2 top-1/2 -translate-y-1/2'/>
+                            className='w-full py-4 pl-12 pr-12 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-slate focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all disabled:opacity-50'
+                        />
                         <button
                             type='button'
                             onClick={() => setShowConfirmPassword((prev) => !prev)}
-                            className='absolute right-2 top-1/2 -translate-y-1/2'
+                            className='absolute right-4 top-1/2 -translate-y-1/2 text-slate hover:text-white transition-colors'
                             aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
                         >
-                            {showConfirmPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                            {showConfirmPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
                         </button>
                     </div>
 
                     {errorMessage && (
-                        <p className='text-sm text-red-400' role='alert' aria-live='assertive'>
+                        <p className='text-sm font-medium text-red-400 -mt-2 ml-1' role='alert' aria-live='assertive'>
                             {errorMessage}
                         </p>
                     )}
 
                     {statusMessage && (
-                        <p className='text-sm text-secondary' role='status' aria-live='polite'>
+                        <p className='text-sm font-medium text-neon -mt-2 ml-1 leading-relaxed' role='status' aria-live='polite'>
                             {statusMessage}
                         </p>
                     )}
 
-                    <button disabled={isSubmitting} className='flex gap-2 justify-center items-center btn bg-secondary w-full disabled:opacity-70 disabled:cursor-not-allowed' type='submit'>
-                        {isSubmitting ? 'Updating...' : 'Update password'}
+                    <button 
+                        disabled={isSubmitting} 
+                        className='w-full bg-white text-void font-bold py-4 rounded-2xl hover:scale-[1.02] transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed mt-2' 
+                        type='submit'
+                    >
+                        {isSubmitting ? 'Updating...' : 'Update Password'}
                     </button>
                 </form>
 
-                <NavLink to="/login" className="flex gap-2 items-center justify-center text-gray-200 hover:text-gray-100"><FaArrowLeft/> Back to login</NavLink>
-            </div>
+                <NavLink to="/login" className="flex gap-2 items-center justify-center text-slate font-medium hover:text-white transition-colors mt-2">
+                    <FaArrowLeft size={14} /> Back to Sign In
+                </NavLink>
+            </motion.div>
         </div>
     );
 }

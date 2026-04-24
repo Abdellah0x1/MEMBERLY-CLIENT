@@ -43,7 +43,7 @@ const Subscriptions = (): React.JSX.Element => {
         <div className='w-full max-w-7xl mx-auto space-y-8'>
             <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-center sm:text-left'>
                 <div className="w-full sm:w-auto">
-                    <h1 className='text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent'>
+                    <h1 className='text-3xl font-bold text-gray-900 dark:text-white tracking-tight'>
                         Subscription Plans
                     </h1>
                     <p className='text-gray-500 dark:text-gray-400 mt-1'>Manage your gym memberships and pricing tiers.</p>
@@ -61,7 +61,7 @@ const Subscriptions = (): React.JSX.Element => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.15, ease: "easeOut" }}
                         key={plan.id}
-                        className={`relative group bg-white dark:bg-[#12121a] rounded-3xl p-8 border-2 ${plan.borderColor} hover:-translate-y-2 transition-transform duration-300 shadow-sm`}
+                        className={`relative group bg-white dark:bg-[#12121a] rounded-3xl p-8 border-2 ${plan.borderColor} hover:-translate-y-1 transition-transform duration-300 shadow-sm`}
                     >
                         {plan.popular && (
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2">

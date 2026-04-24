@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router';
 
 import { useAuth } from '../../hooks/useAuth';
-import { Activity, LayoutDashboard, CreditCard, Users, Dumbbell, Settings, Search, Menu, X, Bell, Clock, ChevronDown } from 'lucide-react';
+import { Activity, LayoutDashboard, CreditCard, Users, Dumbbell, Settings, Search, Menu, X, Bell, ChevronDown } from 'lucide-react';
 import { IoIosNotifications } from "react-icons/io";
 import { PiSignOut } from "react-icons/pi";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
@@ -52,38 +52,37 @@ const Dashboard = (): React.JSX.Element => {
     }, []);
 
     return (
-        <div className='flex h-screen bg-gray-50 dark:bg-[#0a0a0f] dark:text-gray-100 relative overflow-hidden'>
-            {/* Subtle background glow for glassmorphism to show through */}
-            <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-neon/5 blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-500/5 blur-[100px] rounded-full pointer-events-none translate-x-1/3 translate-y-1/3" />
-
+        <div className='flex h-screen bg-gray-50 dark:bg-background text-gray-900 dark:text-gray-100 font-sans selection:bg-neon/30'>
             {/* Mobile overlay */}
             {sidebarOpen && (
                 <div
-                    className='fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden'
+                    className='fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden transition-opacity'
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
 
             {/* Sidebar */}
             <aside className={`
-                fixed md:static z-40 flex flex-col h-screen w-64 shrink-0
-                bg-white/60 dark:bg-[#12121a]/50 backdrop-blur-2xl border-r border-gray-200/50 dark:border-white/[0.05]
-                transition-transform duration-200 ease-in-out shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-none
-                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+                fixed md:static inset-y-0 left-0 z-50 flex flex-col w-64
+                bg-white dark:bg-void border-r border-gray-200 dark:border-gray-800
+                transition-transform duration-300 ease-in-out md:translate-x-0
+                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Logo */}
-                <div className='flex items-center justify-between px-6 py-5 border-b border-gray-200/50 dark:border-white/[0.05]'>
-                    <h1 className='font-bold text-xl flex gap-2 items-center text-neon'>
-                        <Activity size={22} /> MEMBERLY
+                <div className='flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-800 shrink-0'>
+                    <h1 className='font-bold text-lg flex gap-2 items-center tracking-tight'>
+                        <Activity size={20} className="text-neon" /> MEMBERLY
                     </h1>
-                    <button className='md:hidden text-gray-500' onClick={() => setSidebarOpen(false)}>
+                    <button className='md:hidden text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors' onClick={() => setSidebarOpen(false)}>
                         <X size={20} />
                     </button>
                 </div>
 
                 {/* Nav links */}
-                <nav className='flex-1 px-3 py-4 overflow-y-auto'>
+                <nav className='flex-1 py-6 px-4 overflow-y-auto'>
+                    <div className='text-[10px] font-semibold text-gray-400 dark:text-gray-500 mb-4 px-2 uppercase tracking-wider'>
+                        Main Menu
+                    </div>
                     <ul className='flex flex-col gap-1'>
                         {navLinks.map(({ to, label, icon: Icon, end }) => (
                             <li key={label}>
@@ -92,14 +91,14 @@ const Dashboard = (): React.JSX.Element => {
                                     end={end}
                                     onClick={() => setSidebarOpen(false)}
                                     className={({ isActive }) =>
-                                        `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                                        `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                                             isActive
-                                                ? 'bg-gradient-to-r from-neon/20 to-neon/5 text-neon shadow-[0_0_15px_-3px_rgba(34,211,238,0.3)]'
-                                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 dark:hover:text-gray-200'
+                                                ? 'bg-gray-100 dark:bg-gray-800/60 text-gray-900 dark:text-white'
+                                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/30 hover:text-gray-900 dark:hover:text-gray-200'
                                         }`
                                     }
                                 >
-                                    <Icon size={18} />
+                                    <Icon size={18} className='shrink-0' />
                                     {label}
                                 </NavLink>
                             </li>
@@ -108,130 +107,131 @@ const Dashboard = (): React.JSX.Element => {
                 </nav>
 
                 {/* Sign out */}
-                <div className='px-3 py-4 border-t border-gray-200/50 dark:border-white/[0.05]'>
-                    <button onClick={()=> logout()} className='flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium w-full text-gray-600 dark:text-gray-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 dark:hover:text-red-400 transition-all'>
-                        <PiSignOut size={18} />
+                <div className='p-4 border-t border-gray-200 dark:border-gray-800 shrink-0'>
+                    <button onClick={() => logout()} className='flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium w-full text-gray-600 dark:text-gray-400 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 transition-colors'>
+                        <PiSignOut size={18} className='shrink-0' />
                         Sign Out
                     </button>
                 </div>
             </aside>
 
             {/* Main content */}
-            <div className='flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative z-10'>
+            <div className='flex-1 flex flex-col min-w-0 h-screen overflow-hidden bg-white dark:bg-background'>
                 {/* Top nav */}
-                <nav className='sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-gray-200/50 dark:border-white/[0.05] bg-white/60 dark:bg-[#0a0a0f]/60 backdrop-blur-2xl px-4 sm:px-6 py-3 shrink-0 shadow-[0_4px_24px_rgba(0,0,0,0.02)] dark:shadow-none'>
+                <header className='h-16 flex items-center justify-between px-4 sm:px-8 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-background shrink-0'>
                     {/* Left: hamburger + search */}
-                    <div className='flex items-center gap-3 flex-1 min-w-0'>
-                        <button className='md:hidden text-gray-500 shrink-0' onClick={() => setSidebarOpen(true)}>
-                            <Menu size={22} />
+                    <div className='flex items-center gap-4 flex-1 min-w-0'>
+                        <button className='md:hidden text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors shrink-0' onClick={() => setSidebarOpen(true)}>
+                            <Menu size={20} />
                         </button>
-                        <div className='relative max-w-sm w-full'>
+                        <div className='relative max-w-md w-full hidden sm:block'>
                             <Search className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' size={16} />
                             <input
-                                placeholder='Search...'
-                                className='w-full py-2 pl-9 pr-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500'
+                                placeholder='Search everywhere...'
+                                className='w-full py-1.5 pl-9 pr-4 rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-void text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500'
                             />
                         </div>
                     </div>
 
                     {/* Right: actions + profile */}
-                    <div className='flex items-center gap-2 sm:gap-3 shrink-0'>
+                    <div className='flex items-center gap-2 sm:gap-4 shrink-0'>
                         <button
                             onClick={toggleTheme}
-                            className='p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-white/10 transition-all'
+                            className='p-2 rounded-md text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
                             title='Toggle theme'
                         >
                             {theme === 'light'
-                                ? <MdOutlineLightMode size={20} />
-                                : <MdOutlineDarkMode size={20} />
+                                ? <MdOutlineLightMode size={18} />
+                                : <MdOutlineDarkMode size={18} />
                             }
                         </button>
-                        <div className='relative' ref={notifRef}>
+                        
+                        <div className='relative flex items-center' ref={notifRef}>
                             <button
                                 onClick={() => setNotifOpen(prev => !prev)}
-                                className={`relative p-2 rounded-lg border transition-all ${
+                                className={`relative p-2 rounded-md transition-colors ${
                                     notifOpen
-                                        ? 'border-neon bg-neon/10 shadow-[0_0_10px_-3px_rgba(34,211,238,0.3)]'
-                                        : 'border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-white/10'
+                                        ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800'
                                 }`}
                                 title='Notifications'
                             >
                                 <IoIosNotifications size={20} />
                                 {notifications.some(n => n.unread) && (
-                                    <span className='absolute top-1.5 right-1.5 w-2 h-2 bg-signal rounded-full' />
+                                    <span className='absolute top-2 right-2 w-1.5 h-1.5 bg-signal rounded-full ring-2 ring-white dark:ring-background' />
                                 )}
                             </button>
 
                             {/* Notification dropdown */}
                             {notifOpen && (
-                                <div className='absolute right-0 mt-2 w-80 sm:w-96 bg-white dark:bg-[#161620] border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] z-50 overflow-hidden'>
-                                    <div className='flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800/50'>
+                                <div className='absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-void border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50 overflow-hidden'>
+                                    <div className='flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800'>
                                         <h3 className='font-semibold text-sm'>Notifications</h3>
-                                        <button onClick={markAllRead} className='text-xs text-neon font-medium cursor-pointer hover:underline'>Mark all read</button>
+                                        <button onClick={markAllRead} className='text-xs text-neon font-medium hover:text-neon/80 transition-colors'>Mark all read</button>
                                     </div>
                                     <div className='max-h-80 overflow-y-auto'>
-                                        {notifications.map((n) => (
-                                            <div
-                                                key={n.id}
-                                                onClick={() => markOneRead(n.id)}
-                                                className={`flex gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer border-b border-gray-50 dark:border-gray-800/30 last:border-0 ${
-                                                    n.unread ? 'bg-neon/5 dark:bg-neon/5' : ''
-                                                }`}
-                                            >
-                                                <div className={`mt-0.5 p-2 rounded-lg shrink-0 ${
-                                                    n.unread
-                                                        ? 'bg-neon/10 text-neon'
-                                                        : 'bg-gray-100 dark:bg-gray-800/50 text-gray-400'
-                                                }`}>
-                                                    <Bell size={14} />
-                                                </div>
-                                                <div className='min-w-0 flex-1'>
-                                                    <p className={`text-sm leading-tight ${
-                                                        n.unread ? 'font-semibold' : 'font-medium text-gray-600 dark:text-gray-400'
-                                                    }`}>{n.title}</p>
-                                                    <p className='text-xs text-gray-500 dark:text-gray-500 mt-0.5 truncate'>{n.desc}</p>
-                                                    <div className='flex items-center gap-1 mt-1 text-gray-400'>
-                                                        <Clock size={10} />
-                                                        <span className='text-[11px]'>{n.time}</span>
+                                        {notifications.length === 0 ? (
+                                            <div className="p-4 text-center text-sm text-gray-500">No new notifications.</div>
+                                        ) : (
+                                            notifications.map((n) => (
+                                                <div
+                                                    key={n.id}
+                                                    onClick={() => markOneRead(n.id)}
+                                                    className={`flex gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors cursor-pointer border-b border-gray-100 dark:border-gray-800/50 last:border-0 ${
+                                                        n.unread ? 'bg-blue-50/50 dark:bg-gray-800/30' : ''
+                                                    }`}
+                                                >
+                                                    <div className='mt-0.5 shrink-0'>
+                                                        <div className={`p-1.5 rounded-full ${
+                                                            n.unread ? 'bg-neon/10 text-neon' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'
+                                                        }`}>
+                                                            <Bell size={14} />
+                                                        </div>
                                                     </div>
+                                                    <div className='min-w-0 flex-1'>
+                                                        <p className={`text-sm ${
+                                                            n.unread ? 'font-medium text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'
+                                                        }`}>{n.title}</p>
+                                                        <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1'>{n.desc}</p>
+                                                        <div className='flex items-center gap-1 mt-1.5 text-gray-400'>
+                                                            <span className='text-[11px] font-medium'>{n.time}</span>
+                                                        </div>
+                                                    </div>
+                                                    {n.unread && (
+                                                        <div className="shrink-0 flex items-center justify-center w-2">
+                                                            <span className='w-1.5 h-1.5 bg-neon rounded-full' />
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                {n.unread && (
-                                                    <span className='w-2 h-2 mt-2 bg-neon rounded-full shrink-0' />
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className='px-4 py-2.5 border-t border-gray-100 dark:border-gray-800/50 text-center'>
-                                        <span className='text-xs text-neon font-medium cursor-pointer hover:underline'>View all notifications</span>
+                                            ))
+                                        )}
                                     </div>
                                 </div>
                             )}
                         </div>
-                        <div className='hidden sm:flex items-center gap-3 ml-2 pl-3 border-l border-gray-200 dark:border-gray-800'>
-                            <button className='group flex items-center gap-3 p-1.5 pr-3 rounded-full hover:bg-gray-100 dark:hover:bg-white/[0.04] transition-all outline-none border border-transparent hover:border-gray-200 dark:hover:border-white/10'>
-                                <div className='relative'>
-                                    <div className='absolute inset-0 bg-gradient-to-r from-neon to-purple-500 rounded-full blur-[3px] opacity-0 group-hover:opacity-70 transition-opacity duration-300' />
-                                    <img
-                                        className='relative w-9 h-9 rounded-full object-cover border-[1.5px] border-white dark:border-[#1a1a24] bg-white dark:bg-[#12121a]'
-                                        src={user?.picture || userIcon}
-                                        alt='avatar'
-                                    />
-                                    <div className='absolute -bottom-0.5 -right-0.5 w-[14px] h-[14px] bg-emerald-500 rounded-full border-[2.5px] border-white dark:border-[#12121a]' />
-                                </div>
-                                <div className='leading-tight text-left mr-1'>
-                                    <p className='text-sm font-semibold truncate max-w-[120px] text-gray-800 dark:text-gray-100 group-hover:text-neon transition-colors'>{user?.name || 'Admin User'}</p>
-                                    <p className='text-[11px] font-medium text-gray-500 dark:text-gray-400 capitalize tracking-wide'>{user?.role || 'Owner'}</p>
-                                </div>
-                                <ChevronDown size={14} className='text-gray-400 group-hover:text-neon transition-transform duration-300 group-hover:translate-y-0.5' />
-                            </button>
-                        </div>
+
+                        <div className='w-px h-5 bg-gray-200 dark:bg-gray-800 mx-1 hidden sm:block'></div>
+
+                        <button className='flex items-center gap-2.5 hover:bg-gray-50 dark:hover:bg-gray-800/50 p-1 pr-2 rounded-md transition-colors'>
+                            <img
+                                className='w-7 h-7 rounded-full object-cover ring-1 ring-gray-200 dark:ring-gray-800'
+                                src={user?.picture || userIcon}
+                                alt='avatar'
+                            />
+                            <div className='hidden sm:flex flex-col items-start'>
+                                <span className='text-sm font-medium text-gray-900 dark:text-white leading-none'>{user?.name || 'Admin User'}</span>
+                            </div>
+                            <ChevronDown size={14} className='text-gray-400 ml-1' />
+                        </button>
                     </div>
-                </nav>
+                </header>
 
                 {/* Page content */}
-                <div className='flex-1 p-4 sm:p-6'>
-                    <Outlet />
-                </div>
+                <main className='flex-1 p-4 sm:p-8 overflow-y-auto bg-gray-50/50 dark:bg-background'>
+                    <div className="max-w-7xl mx-auto w-full h-full flex flex-col">
+                        <Outlet />
+                    </div>
+                </main>
             </div>
         </div>
     );

@@ -59,14 +59,14 @@ const Members = (): React.JSX.Element => {
         <div className='w-full max-w-7xl mx-auto space-y-6'>
             <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
                 <div>
-                    <h1 className='text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent'>
+                    <h1 className='text-3xl font-bold text-gray-900 dark:text-white tracking-tight'>
                         Members Directory
                     </h1>
                     <p className='text-gray-500 dark:text-gray-400 mt-1'>Manage your gym members and invite new ones.</p>
                 </div>
                 <button
                     onClick={() => setShowModal(true)}
-                    className='flex items-center gap-2 px-5 py-2.5 bg-neon text-black font-semibold rounded-xl hover:bg-neon/90 hover:shadow-[0_0_20px_-5px_rgba(0,255,170,0.5)] transition-all'
+                    className='flex items-center gap-2 px-5 py-2.5 bg-neon text-black font-semibold rounded-xl hover:bg-neon/90 shadow-sm hover:shadow-md transition-all active:scale-95'
                 >
                     <Plus size={20} />
                     <span>Invite Member</span>

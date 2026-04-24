@@ -14,7 +14,7 @@ const Settings = (): React.JSX.Element => {
     return (
         <div className='w-full max-w-5xl mx-auto space-y-8'>
             <div>
-                <h1 className='text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 bg-clip-text text-transparent'>
+                <h1 className='text-3xl font-bold text-gray-900 dark:text-white tracking-tight'>
                     Gym Settings
                 </h1>
                 <p className='text-gray-500 dark:text-gray-400 mt-1'>Update your gym's public profile and configurations.</p>
@@ -121,7 +121,7 @@ const Settings = (): React.JSX.Element => {
                         )}
 
                         <div className="pt-6 border-t border-gray-200 dark:border-gray-800 flex justify-end">
-                            <button type="submit" className="flex items-center gap-2 px-6 py-2.5 bg-neon text-black font-bold rounded-xl hover:bg-neon/90 hover:shadow-[0_0_20px_-5px_rgba(0,255,170,0.5)] transition-all">
+                            <button type="submit" className="flex items-center gap-2 px-6 py-2.5 bg-neon text-black font-bold rounded-xl hover:bg-neon/90 shadow-sm hover:shadow-md transition-all active:scale-95">
                                 <Save size={18} />
                                 <span>Save Changes</span>
                             </button>

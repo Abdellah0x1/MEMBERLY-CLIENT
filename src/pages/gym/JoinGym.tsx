@@ -5,215 +5,247 @@ import Spinner from '../../components/Spinner';
 
 import { type Gym } from '../../types/gym';
 import { toast } from 'react-toastify';
-import { Activity, User, Mail, Lock, MapPin, Building2, Clock } from 'lucide-react';
+import { Activity, User, Mail, Lock, MapPin, Building2, Clock, ChevronRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { useAuth } from '../../hooks/useAuth';
 
-const JoinGym = ():React.JSX.Element => {
-    const {code} = useParams<string>();
-    const [gym, setGym]= useState<Gym | null>(null);
+const JoinGym = (): React.JSX.Element => {
+    const { code } = useParams<string>();
+    const [gym, setGym] = useState<Gym | null>(null);
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirm, setPasswordConfirm] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isSubmetting, setIsSubmetting] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isSubmetting, setIsSubmetting] = useState<boolean>(false);
     const navigate = useNavigate();
-   
+    const { reload, } = useAuth();
 
-    
-
-    useEffect(()=> {
-        async function getGym(){
-            try{
-                setIsLoading(true)
+    useEffect(() => {
+        async function getGym() {
+            try {
+                if (!code) return;
+                setIsLoading(true);
                 const res = await previewGym(code);
-                setGym(res.data.data.gym)
-                setIsLoading(false)
-
-            }catch(e){
-                console.log('could not fetch gym data',e)
-            }finally{
-                setIsLoading(false)
+                setGym(res.data.data.gym);
+            } catch (e) {
+                console.log('could not fetch gym data', e);
+            } finally {
+                setIsLoading(false);
             }
         }
         getGym();
-    },[code])
-    
-    
-    
+    }, [code]);
 
-
-
-    async function onSubmit(e: React.SubmitEvent){
+    async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
         setIsSubmetting(true);
 
-        try{
-            if(!code) {
-                toast.error('invalid invite link')
-                return
+        try {
+            if (!code) {
+                toast.error('Invalid invite link');
+                return;
+            }
+            if (password !== passwordConfirm) {
+                toast.error('Passwords do not match');
+                return;
             }
             const res = await addMember({
                 name,
                 email,
                 password,
                 passwordConfirm
-            },code)
-            toast.success("member created")
-            navigate(res.data.redirectTo)
-            
-        }catch(e){
-            console.log('error creating member',e)
-
-        }finally{
-            setIsSubmetting(false)
+            }, code);
+            toast.success("Account created successfully!");
+            await reload();
+            navigate('/customer')
+        } catch (e: any) {
+            console.log('error creating member', e);
+            toast.error(e.response?.data?.message || 'Failed to join gym');
+        } finally {
+            setIsSubmetting(false);
         }
     }
 
     if (isLoading) {
         return (
-            <div className='bg-[#0a0a0f] dark:bg-[#0a0a0f] min-h-screen text-gray-100 flex items-center justify-center'>
-                <div className='flex items-center gap-3'>
-                    <Spinner />
-                    <p className='text-gray-300'>Loading gym details...</p>
-                </div>
+            <div className="bg-void min-h-screen flex items-center justify-center font-sans">
+                <Spinner />
             </div>
         );
     }
 
     return (
-        <div className='bg-gradient-to-br from-[#0a0a0f] via-[#0f0f18] to-[#0a0a0f] dark:from-[#0a0a0f] dark:via-[#0f0f18] dark:to-[#0a0a0f] min-h-screen text-gray-100 px-4 py-8 sm:px-6 sm:py-12 flex items-center justify-center'>
-                <div className='w-full max-w-md'>
-                    {/* Gym info card */}
-                    <div className='bg-[#12121a] border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)]'>
-                        {/* Logo and header */}
-                        <div className='flex flex-col items-center mb-8'>
-                            <div className='w-16 h-16 bg-gradient-to-br from-neon to-neon/60 rounded-2xl flex items-center justify-center mb-4 shadow-[0_0_20px_-3px_rgba(34,211,238,0.4)]'>
-                                <Activity size={32} className='text-[#0a0a0f]' />
-                            </div>
-                            <h1 className='text-center text-2xl sm:text-3xl font-bold mb-2'>Welcome to <span className='text-neon'>{gym?.name || 'Memberly'}</span></h1>
-                            <p className='text-center text-sm text-gray-400'>Join our community and start your fitness journey</p>
-                        </div>
+        <div className="bg-void text-ghost min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-neon selection:text-void">
+            {/* Background effects */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-void/90 z-10" />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-white/[0.02] to-transparent blur-3xl rounded-full opacity-50 z-0 pointer-events-none" />
+            </div>
 
-                        {/* Gym details preview */}
-                        {gym && (
-                            <div className='mb-8 p-4 bg-[#0a0a0f]/50 rounded-xl border border-gray-800/50'>
-                                <div className='flex items-start gap-3 mb-3'>
-                                    <MapPin size={16} className='text-neon shrink-0 mt-0.5' />
-                                    <div>
-                                        <p className='text-xs text-gray-400 uppercase tracking-wide mb-1'>Location</p>
-                                        <p className='text-sm text-gray-300'>{gym.address || 'Gym Address'}</p>
+            <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full max-w-lg relative z-20"
+            >
+                {/* Premium Card Container */}
+                <div className="bg-white/[0.02] border border-white/[0.05] backdrop-blur-2xl p-8 sm:p-12 rounded-[2.5rem] shadow-2xl">
+
+                    {/* Header */}
+                    <div className="flex flex-col items-center mb-10 text-center">
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                            className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mb-6 text-neon"
+                        >
+                            <Activity size={32} strokeWidth={1.5} />
+                        </motion.div>
+                        <motion.h1
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.3, duration: 0.5 }}
+                            className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2"
+                        >
+                            Join <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon to-white">{gym?.name || 'Memberly'}</span>
+                        </motion.h1>
+                        <motion.p
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.4, duration: 0.5 }}
+                            className="text-slate text-sm font-medium"
+                        >
+                            Step inside and elevate your fitness journey.
+                        </motion.p>
+                    </div>
+
+                    {/* Gym Context Block */}
+                    {gym && (
+                        <div className="mb-8 p-5 bg-black/20 border border-white/5 rounded-2xl">
+                            <div className="flex items-start gap-4 mb-4">
+                                <div className="p-2 bg-white/5 rounded-xl text-neon mt-0.5">
+                                    <MapPin size={16} />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-xs font-semibold text-slate uppercase tracking-wider mb-1">Location</p>
+                                    <p className="text-sm text-white font-medium">{gym.address || 'Gym Address'}</p>
+                                </div>
+                            </div>
+                            {gym.description && (
+                                <div className="flex items-start gap-4">
+                                    <div className="p-2 bg-white/5 rounded-xl text-neon mt-0.5">
+                                        <Building2 size={16} />
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-xs font-semibold text-slate uppercase tracking-wider mb-1">About</p>
+                                        <p className="text-sm text-white/80 leading-relaxed font-medium line-clamp-2">{gym.description}</p>
                                     </div>
                                 </div>
-                                {gym.description && (
-                                    <div className='flex items-start gap-3'>
-                                        <Building2 size={16} className='text-neon shrink-0 mt-0.5' />
-                                        <div>
-                                            <p className='text-xs text-gray-400 uppercase tracking-wide mb-1'>About</p>
-                                            <p className='text-sm text-gray-300 line-clamp-2'>{gym.description}</p>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                            )}
+                        </div>
+                    )}
 
-                        <form className='flex flex-col gap-5' onSubmit={onSubmit}>
-                            {/* Name */}
-                            <div className='flex flex-col gap-2'>
-                                <label className='text-sm font-medium text-gray-300 flex items-center gap-2'>
-                                    <User size={16} className='text-neon' />
-                                    Full Name
-                                </label>
-                                <input
-                                    value={name}
-                                    onChange={e=> setName(e.target.value)}
-                                    className='w-full px-4 py-2.5 bg-[#0a0a0f] border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all placeholder:text-gray-500'
-                                    placeholder='Enter your full name'
-                                    required
-                                />
-                            </div>
+                    <form className="flex flex-col gap-6" onSubmit={onSubmit}>
+                        {/* Name Field */}
+                        <div className="group flex flex-col gap-2">
+                            <label className="text-xs font-semibold text-slate uppercase tracking-wider flex items-center gap-2 ml-1">
+                                <User size={14} className="text-neon/70 group-focus-within:text-neon transition-colors" />
+                                Legal Name
+                            </label>
+                            <input
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                className="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white text-sm font-medium focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all placeholder:text-slate/50"
+                                placeholder="Jane Doe"
+                                required
+                            />
+                        </div>
 
-                            {/* Email */}
-                            <div className='flex flex-col gap-2'>
-                                <label className='text-sm font-medium text-gray-300 flex items-center gap-2'>
-                                    <Mail size={16} className='text-neon' />
-                                    Email
-                                </label>
-                                <input
-                                    value={email}
-                                    onChange={e=> setEmail(e.target.value)}
-                                    type='email'
-                                    className='w-full px-4 py-2.5 bg-[#0a0a0f] border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all placeholder:text-gray-500'
-                                    placeholder='Enter your email'
-                                    required
-                                />
-                            </div>
+                        {/* Email Field */}
+                        <div className="group flex flex-col gap-2">
+                            <label className="text-xs font-semibold text-slate uppercase tracking-wider flex items-center gap-2 ml-1">
+                                <Mail size={14} className="text-neon/70 group-focus-within:text-neon transition-colors" />
+                                Email Address
+                            </label>
+                            <input
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                type="email"
+                                className="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white text-sm font-medium focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all placeholder:text-slate/50"
+                                placeholder="jane@example.com"
+                                required
+                            />
+                        </div>
 
-                            {/* Password */}
-                            <div className='flex flex-col gap-2'>
-                                <label className='text-sm font-medium text-gray-300 flex items-center gap-2'>
-                                    <Lock size={16} className='text-neon' />
+                        {/* Passwords Layout */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            {/* Password Field */}
+                            <div className="group flex flex-col gap-2">
+                                <label className="text-xs font-semibold text-slate uppercase tracking-wider flex items-center gap-2 ml-1">
+                                    <Lock size={14} className="text-neon/70 group-focus-within:text-neon transition-colors" />
                                     Password
                                 </label>
                                 <input
                                     value={password}
-                                    onChange={e=> setPassword(e.target.value)}
-                                    type='password'
-                                    className='w-full px-4 py-2.5 bg-[#0a0a0f] border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all placeholder:text-gray-500'
-                                    placeholder='Create a password'
+                                    onChange={e => setPassword(e.target.value)}
+                                    type="password"
+                                    className="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white text-sm font-medium focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all placeholder:text-slate/50"
+                                    placeholder="••••••••"
                                     required
                                     minLength={8}
                                 />
                             </div>
 
-                            {/* Confirm Password */}
-                            <div className='flex flex-col gap-2'>
-                                <label className='text-sm font-medium text-gray-300 flex items-center gap-2'>
-                                    <Lock size={16} className='text-neon' />
-                                    Confirm Password
+                            {/* Confirm Password Field */}
+                            <div className="group flex flex-col gap-2">
+                                <label className="text-xs font-semibold text-slate uppercase tracking-wider flex items-center gap-2 ml-1">
+                                    <Lock size={14} className="text-neon/70 group-focus-within:text-neon transition-colors" />
+                                    Confirm
                                 </label>
                                 <input
                                     value={passwordConfirm}
-                                    onChange={(e)=> setPasswordConfirm(e.target.value)}
-                                    type='password'
-                                    className='w-full px-4 py-2.5 bg-[#0a0a0f] border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 transition-all placeholder:text-gray-500'
-                                    placeholder='Confirm your password'
+                                    onChange={e => setPasswordConfirm(e.target.value)}
+                                    type="password"
+                                    className="w-full px-5 py-3.5 bg-black/40 border border-white/10 rounded-xl text-white text-sm font-medium focus:outline-none focus:border-neon focus:ring-1 focus:ring-neon transition-all placeholder:text-slate/50"
+                                    placeholder="••••••••"
                                     required
                                 />
                             </div>
-
-                            {/* Submit button */}
-                            <button
-                                type='submit'
-                                disabled={isSubmetting}
-                                className={`mt-4 w-full py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
-                                    isSubmetting
-                                        ? 'bg-gray-600 text-gray-300 cursor-not-allowed'
-                                        : 'bg-gradient-to-r from-neon to-neon/90 hover:from-neon hover:to-neon/80 shadow-[0_0_20px_-5px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_-5px_rgba(34,211,238,0.5)] text-[#0a0a0f]'
-                                }`}
-                            >
-                                {isSubmetting ? (
-                                    <>
-                                        <Spinner size='sm' className='border-gray-400 border-t-gray-200' />
-                                        Creating Account...
-                                    </>
-                                ) : (
-                                    <>
-                                        Join {gym?.name || 'the Gym'}
-                                        <Activity size={16} />
-                                    </>
-                                )}
-                            </button>
-                        </form>
-
-                        {/* Footer */}
-                        <div className='mt-6 text-center text-xs text-gray-500 flex items-center justify-center gap-2'>
-                            <Clock size={12} />
-                            <span>Your journey starts now</span>
                         </div>
+
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            disabled={isSubmetting}
+                            className={`mt-6 w-full py-4 rounded-xl text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 ${isSubmetting
+                                ? 'bg-white/5 text-slate cursor-not-allowed border border-white/10'
+                                : 'bg-white text-void hover:scale-[1.02] hover:bg-neon hover:text-void'
+                                }`}
+                        >
+                            {isSubmetting ? (
+                                <>
+                                    <Spinner size="sm" className="border-slate border-t-white" />
+                                    <span className="animate-pulse">Setting Up Profile...</span>
+                                </>
+                            ) : (
+                                <>
+                                    Complete Membership
+                                    <ChevronRight size={18} />
+                                </>
+                            )}
+                        </button>
+                    </form>
+
+                    {/* Footer */}
+                    <div className="mt-8 text-center text-xs font-medium text-slate flex items-center justify-center gap-2">
+                        <Clock size={12} className="opacity-70" />
+                        <span>Ready when you are. Your journey begins today.</span>
                     </div>
                 </div>
+            </motion.div>
         </div>
     );
-}
+};
 
 export default JoinGym;

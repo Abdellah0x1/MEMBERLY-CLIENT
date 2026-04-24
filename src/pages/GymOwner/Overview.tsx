@@ -20,7 +20,7 @@ const Overview = (): React.JSX.Element => {
         <div className="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent dark:from-white dark:to-gray-500">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
                         Dashboard Overview
                     </h1>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back. Here's what's happening at your gym today.</p>
@@ -35,9 +35,8 @@ const Overview = (): React.JSX.Element => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="relative group overflow-hidden rounded-[2rem] border border-gray-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] backdrop-blur-2xl p-6 hover:shadow-xl hover:shadow-neon/5 dark:hover:bg-white/[0.04] transition-all duration-300"
+                        className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#12121a] p-6 hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 dark:from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <div className="flex items-center justify-between">
                             <div className={`p-3 rounded-xl ${stat.bg} ${stat.color}`}>
                                 <stat.icon size={24} />
@@ -60,9 +59,8 @@ const Overview = (): React.JSX.Element => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="lg:col-span-2 rounded-[2rem] border border-gray-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] backdrop-blur-2xl p-6 xl:p-8 shadow-sm group hover:dark:bg-white/[0.03] transition-colors duration-300 relative overflow-hidden"
+                    className="lg:col-span-2 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#12121a] p-6 xl:p-8 shadow-sm group hover:border-gray-300 dark:hover:border-gray-700 transition-colors duration-300 relative overflow-hidden"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     <div className="flex justify-between items-center mb-6 relative z-10">
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Revenue Overview</h2>
                         <select className="bg-gray-50 dark:bg-[#1a1a24] border border-gray-200 dark:border-gray-800 text-sm rounded-lg px-3 py-1.5 outline-none focus:border-neon focus:ring-1 focus:ring-neon/30 text-gray-700 dark:text-gray-300">
@@ -81,9 +79,8 @@ const Overview = (): React.JSX.Element => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="rounded-[2rem] border border-gray-200 dark:border-white/[0.05] bg-white dark:bg-white/[0.02] backdrop-blur-2xl p-6 xl:p-8 shadow-sm flex flex-col group hover:dark:bg-white/[0.03] transition-colors duration-300 relative overflow-hidden"
+                    className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#12121a] p-6 xl:p-8 shadow-sm flex flex-col group hover:border-gray-300 dark:hover:border-gray-700 transition-colors duration-300 relative overflow-hidden"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 relative z-10">Recent Activity</h2>
                     <div className="flex-1 space-y-6 relative z-10">
                         {recentActivity.map((activity, i) => (

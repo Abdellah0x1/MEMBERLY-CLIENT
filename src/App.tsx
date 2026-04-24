@@ -1,5 +1,5 @@
 import type React from "react"
-import {BrowserRouter, Routes, Route} from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import Layout from "./pages/Layout"
 import Home from "./pages/Home"
@@ -19,39 +19,53 @@ import JoinGym from "./pages/gym/JoinGym"
 import SetupGym from "./pages/gym/SetupGym"
 import CustomerProfile from "./pages/GymCustomer/CustomerProfile"
 import Overview from "./pages/GymOwner/Overview"
+import CustomerLayout from "./pages/GymCustomer/CustomerLayout"
+import Schedule from "./pages/GymCustomer/Schedule"
+import CustomerCoaches from "./pages/GymCustomer/CustomerCoaches"
+import Billing from "./pages/GymCustomer/Billing"
+
 
 function App(): React.JSX.Element {
-  
+
 
   return (
     <BrowserRouter>
-      <ToastContainer position='top-center' theme="dark"/>
+      <ToastContainer position='top-center' theme="dark" />
       <Routes>
-        <Route path="/" element={<Layout/>}>
-          <Route index element={<Home/>}/>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
         </Route>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/signup" element={<Signup/>}/>
-        <Route path="/forgotPassword" element={<ForgotPassword/>}/>
-        <Route element={<ProtectedRoute allowedRoles={["owner"]}/>}>
-          <Route path="/dashboard" element={<Dashboard/>}>
-            <Route index element={<Overview/>}/>
-            <Route path="members" element={<Members/>}/>
-            <Route path="coaches" element={<Coaches/>}/>
-            <Route path="settings" element={<Settings/>}/>
-            <Route path="subscriptions" element={<Subscriptions/>}/>
+        {/* auth routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword/:token" element={<ResetPassword />} />
+
+        <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route index element={<Overview />} />
+            <Route path="members" element={<Members />} />
+            <Route path="coaches" element={<Coaches />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="subscriptions" element={<Subscriptions />} />
           </Route>
-          <Route path="/setup-gym" element={<SetupGym/>}/>
-      </Route>
-        <Route path="/memberProfile" element={<CustomerProfile/>}/>
-      <Route element={<ProtectedRoute allowedRoles={['member']}/>}>
-      </Route>
-      <Route path="/resetPassword/:token" element={<ResetPassword/>}/>
-      <Route path="/joingym/:code" element={<JoinGym/>}/>
+          <Route path="/setup-gym" element={<SetupGym />} />
+        </Route>
+
+        <Route path="/joingym/:code" element={<JoinGym />} />
+        {/* customer only routes */}
+        <Route element={<ProtectedRoute allowedRoles={['member']} />}>
+          <Route path="/customer" element={<CustomerLayout />}>
+            <Route index element={<CustomerProfile />} />
+            <Route path="schedule" element={<Schedule />} />
+            <Route path="coaches" element={<CustomerCoaches />} />
+            <Route path="billing" element={<Billing />} />
+          </Route>
+        </Route>
       </Routes>
-      
-        
-      
+
+
+
     </BrowserRouter>
   )
 }
